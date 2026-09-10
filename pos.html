@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counter — Point of Sale</title>
+<style>
+  @font-face {
+    font-family: 'PlexMono';
+    src: local('IBM Plex Mono');
+  }
+  :root {
+    --ink: #EDEEF0;
+    --ink-dim: #8A8F98;
+    --surface: #1B1D21;
+    --surface-raised: #24272C;
+    --surface-line: #33363C;
+    --amber: #E3A438;
+    --amber-dim: #7A5B22;
+    --paper: #F6F1E7;
+    --paper-line: #DCD3BF;
+    --paper-ink: #2B2620;
+    --paper-ink-dim: #8A8070;
+    --green: #6FA97B;
+    --red: #C96A5A;
+    --radius: 3px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    background: var(--surface);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .num {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Top bar ---- */
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid var(--surface-line);
+    flex-shrink: 0;
+  }
+  header .brand {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  header .brand span { color: var(--amber); }
+  header .clock {
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
+
+  /* ---- Main layout ---- */
+  .layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ---- Product side ---- */
+  .catalog {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    padding: 16px 24px 0;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .tab {
+    background: none;
+    border: 1px solid var(--surface-line);
+    color: var(--ink-dim);
+    padding: 7px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .tab:hover { color: var(--ink); border-color: var(--ink-dim); }
+  .tab.active {
+    color: var(--surface);
+    background: var(--amber);
+    border-color: var(--amber);
+    font-weight: 600;
+  }
+
+  .grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    align-content: start;
+  }
+  .item {
+    background: var(--surface-raised);
+    border: 1px solid var(--surface-line);
+    border-radius: var(--radius);
+    padding: 14px 14px 12px;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .12s, transform .08s;
+  }
+  .item:hover { border-color: var(--amber-dim); }
+  .item:active { transform: scale(0.97); }
+  .item .name {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .item .price {
+    font-size: 15px;
+    color: var(--amber);
+    margin-top: auto;
+  }
+  .item .stock-out {
+    font-size: 11px;
+    color: var(--red);
+  }
+  .item.disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ---- Receipt / cart side ---- */
+  .receipt-panel {
+    width: 360px;
+    flex-shrink: 0;
+    background: var(--paper);
+    color: var(--paper-ink);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-left: 1px solid #000;
+  }
+  .receipt-head {
+    padding: 20px 22px 14px;
+    border-bottom: 1px dashed var(--paper-line);
+    flex-shrink: 0;
+  }
+  .receipt-head .title {
+    font-size: 13px;
+    color: var(--paper-ink-dim);
+  }
+  .receipt-head .order-no {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .cart-lines {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 22px;
+  }
+  .empty-state {
+    color: var(--paper-ink-dim);
+    font-size: 13px;
+    padding: 30px 0;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .line .info { flex: 1; min-width: 0; }
+  .line .info .lname {
+    font-size: 13.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .line .info .lprice {
+    font-size: 11.5px;
+    color: var(--paper-ink-dim);
+    margin-top: 1px;
+  }
+  .qty-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .qty-ctrl button {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--paper-line);
+    background: transparent;
+    color: var(--paper-ink);
+    border-radius: 50%;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty-ctrl button:hover { border-color: var(--paper-ink); }
+  .qty-ctrl .q { width: 16px; text-align: center; font-size: 13px; }
+  .line-total {
+    width: 56px;
+    text-align: right;
+    font-size: 13.5px;
+  }
+  .remove-x {
+    background: none;
+    border: none;
+    color: var(--paper-ink-dim);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 0 0 4px;
+  }
+  .remove-x:hover { color: var(--red); }
+
+  .totals {
+    padding: 14px 22px 0;
+    border-top: 1px dashed var(--paper-line);
+    flex-shrink: 0;
+  }
+  .totals .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    padding: 4px 0;
+    color: var(--paper-ink-dim);
+  }
+  .totals .row.due {
+    color: var(--paper-ink);
+    font-size: 19px;
+    font-weight: 600;
+    padding-top: 10px;
+    border-top: 1px solid var(--paper-ink);
+    margin-top: 6px;
+  }
+
+  .pay-area {
+    padding: 14px 22px 22px;
+    flex-shrink: 0;
+  }
+  .tender-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .tender-row input {
+    flex: 1;
+    font-size: 15px;
+    padding: 9px 10px;
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--paper-ink);
+  }
+  .tender-row input:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+  .change-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--paper-ink-dim);
+    margin-bottom: 12px;
+    min-height: 18px;
+  }
+  .change-line.ready { color: var(--green); font-weight: 600; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-primary, .btn-secondary {
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+  }
+  .btn-primary {
+    background: var(--paper-ink);
+    color: var(--paper);
+  }
+  .btn-primary:disabled {
+    background: var(--paper-line);
+    color: var(--paper-ink-dim);
+    cursor: not-allowed;
+  }
+  .btn-primary:not(:disabled):hover { background: #000; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--paper-ink-dim);
+    border: 1px solid var(--paper-line);
+    flex: 0 0 84px;
+  }
+  .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+
+  /* ---- Confirmation overlay ---- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 12, 0.72);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .overlay.show { display: flex; }
+  .confirm-card {
+    background: var(--paper);
+    color: var(--paper-ink);
+    width: 300px;
+    padding: 28px 26px 22px;
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .confirm-card .mark {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 14px;
+  }
+  .confirm-card .headline { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .confirm-card .sub { font-size: 13px; color: var(--paper-ink-dim); margin-bottom: 20px; }
+  .confirm-card .change-out {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .confirm-card button {
+    width: 100%;
+    padding: 11px 0;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--paper-ink);
+    color: var(--paper);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-line); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Counter<span>·</span>POS</div>
+  <div class="clock" id="clock"></div>
+</header>
+
+<div class="layout">
+  <div class="catalog">
+    <div class="tabs" id="tabs"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="receipt-panel">
+    <div class="receipt-head">
+      <div class="title">Current order</div>
+      <div class="order-no" id="orderNo">#000</div>
+    </div>
+
+    <div class="cart-lines" id="cartLines">
+      <div class="empty-state">No items yet.<br>Tap a product to add it.</div>
+    </div>
+
+    <div class="totals">
+      <div class="row"><span>Subtotal</span><span class="num" id="subtotal">$0.00</span></div>
+      <div class="row"><span>Tax (8%)</span><span class="num" id="tax">$0.00</span></div>
+      <div class="row due"><span>Due</span><span class="num" id="due">$0.00</span></div>
+    </div>
+
+    <div class="pay-area">
+      <div class="tender-row">
+        <input type="number" id="tendered" class="num" placeholder="Cash received" step="0.01" min="0">
+      </div>
+      <div class="change-line" id="changeLine"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="clearBtn">Clear</button>
+        <button class="btn-primary" id="chargeBtn" disabled>Charge</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="confirm-card">
+    <div class="mark">✓</div>
+    <div class="headline">Payment complete</div>
+    <div class="sub" id="confirmOrderNo">Order #000</div>
+    <div class="change-out num" id="changeOut">Change: $0.00</div>
+    <button id="newOrderBtn">Start next order</button>
+  </div>
+</div>
+
+<script>
+  // ---------- Data ----------
+  const CATALOG = {
+    "Coffee": [
+      { id: "c1", name: "Drip coffee", price: 3.00 },
+      { id: "c2", name: "Americano", price: 3.50 },
+      { id: "c3", name: "Cappuccino", price: 4.25 },
+      { id: "c4", name: "Latte", price: 4.50 },
+      { id: "c5", name: "Cold brew", price: 4.25 },
+      { id: "c6", name: "Espresso shot", price: 2.50 },
+    ],
+    "Tea": [
+      { id: "t1", name: "Green tea", price: 3.00 },
+      { id: "t2", name: "Chai latte", price: 4.25 },
+      { id: "t3", name: "Iced black tea", price: 3.25 },
+    ],
+    "Bakery": [
+      { id: "b1", name: "Croissant", price: 3.75 },
+      { id: "b2", name: "Blueberry muffin", price: 3.50 },
+      { id: "b3", name: "Cinnamon roll", price: 4.00 },
+      { id: "b4", name: "Sourdough toast", price: 4.75 },
+      { id: "b5", name: "Bagel + cream cheese", price: 4.25, outOfStock: true },
+    ],
+    "Food": [
+      { id: "f1", name: "Avocado toast", price: 8.50 },
+      { id: "f2", name: "Breakfast sandwich", price: 7.25 },
+      { id: "f3", name: "Greek yogurt bowl", price: 6.50 },
+      { id: "f4", name: "Chicken wrap", price: 9.00 },
+    ],
+  };
+  const TAX_RATE = 0.08;
+
+  // ---------- State ----------
+  let activeCategory = Object.keys(CATALOG)[0];
+  let cart = {}; // id -> { item, qty }
+  let orderNumber = Math.floor(100 + Math.random() * 900);
+
+  // ---------- Elements ----------
+  const tabsEl = document.getElementById('tabs');
+  const gridEl = document.getElementById('grid');
+  const cartLinesEl = document.getElementById('cartLines');
+  const subtotalEl = document.getElementById('subtotal');
+  const taxEl = document.getElementById('tax');
+  const dueEl = document.getElementById('due');
+  const tenderedEl = document.getElementById('tendered');
+  const changeLineEl = document.getElementById('changeLine');
+  const chargeBtn = document.getElementById('chargeBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const orderNoEl = document.getElementById('orderNo');
+  const overlay = document.getElementById('overlay');
+  const changeOutEl = document.getElementById('changeOut');
+  const confirmOrderNoEl = document.getElementById('confirmOrderNo');
+  const newOrderBtn = document.getElementById('newOrderBtn');
+
+  const money = n => '$' + n.toFixed(2);
+
+  // ---------- Render: tabs ----------
+  function renderTabs() {
+    tabsEl.innerHTML = '';
+    Object.keys(CATALOG).forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'tab' + (cat === activeCategory ? ' active' : '');
+      btn.textContent = cat;
+      btn.onclick = () => { activeCategory = cat; renderTabs(); renderGrid(); };
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  // ---------- Render: product grid ----------
+  function renderGrid() {
+    gridEl.innerHTML = '';
+    CATALOG[activeCategory].forEach(product => {
+      const card = document.createElement('button');
+      card.className = 'item' + (product.outOfStock ? ' disabled' : '');
+      card.disabled = !!product.outOfStock;
+      card.innerHTML = `
+        <div class="name">${product.name}</div>
+        ${product.outOfStock ? '<div class="stock-out">Out of stock</div>' : `<div class="price num">${money(product.price)}</div>`}
+      `;
+      card.onclick = () => addToCart(product);
+      gridEl.appendChild(card);
+    });
+  }
+
+  // ---------- Cart logic ----------
+  function addToCart(product) {
+    if (!cart[product.id]) cart[product.id] = { item: product, qty: 0 };
+    cart[product.id].qty += 1;
+    renderCart();
+  }
+  function changeQty(id, delta) {
+    if (!cart[id]) return;
+    cart[id].qty += delta;
+    if (cart[id].qty <= 0) delete cart[id];
+    renderCart();
+  }
+  function removeLine(id) {
+    delete cart[id];
+    renderCart();
+  }
+  function clearCart() {
+    cart = {};
+    tenderedEl.value = '';
+    renderCart();
+  }
+
+  function getTotals() {
+    const subtotal = Object.values(cart).reduce((sum, l) => sum + l.item.price * l.qty, 0);
+    const tax = subtotal * TAX_RATE;
+    return { subtotal, tax, due: subtotal + tax };
+  }
+
+  function renderCart() {
+    const lines = Object.entries(cart);
+    if (lines.length === 0) {
+      cartLinesEl.innerHTML = '<div class="empty-state">No items yet.<br>Tap a product to add it.</div>';
+    } else {
+      cartLinesEl.innerHTML = '';
+      lines.forEach(([id, l]) => {
+        const row = document.createElement('div');
+        row.className = 'line';
+        row.innerHTML = `
+          <div class="info">
+            <div class="lname">${l.item.name}</div>
+            <div class="lprice num">${money(l.item.price)} each</div>
+          </div>
+          <div class="qty-ctrl">
+            <button data-act="minus">−</button>
+            <span class="q num">${l.qty}</span>
+            <button data-act="plus">+</button>
+          </div>
+          <div class="line-total num">${money(l.item.price * l.qty)}</div>
+          <button class="remove-x" title="Remove">✕</button>
+        `;
+        row.querySelector('[data-act="minus"]').onclick = () => changeQty(id, -1);
+        row.querySelector('[data-act="plus"]').onclick = () => changeQty(id, 1);
+        row.querySelector('.remove-x').onclick = () => removeLine(id);
+        cartLinesEl.appendChild(row);
+      });
+    }
+
+    const { subtotal, tax, due } = getTotals();
+    subtotalEl.textContent = money(subtotal);
+    taxEl.textContent = money(tax);
+    dueEl.textContent = money(due);
+    chargeBtn.disabled = lines.length === 0;
+    updateChange();
+  }
+
+  function updateChange() {
+    const { due } = getTotals();
+    const tendered = parseFloat(tenderedEl.value);
+    if (isNaN(tendered) || Object.keys(cart).length === 0) {
+      changeLineEl.textContent = '';
+      changeLineEl.className = 'change-line';
+      chargeBtn.disabled = Object.keys(cart).length === 0;
+      return;
+    }
+    const change = tendered - due;
+    if (change < 0) {
+      changeLineEl.textContent = `Short by ${money(Math.abs(change))}`;
+      changeLineEl.className = 'change-line';
+      chargeBtn.disabled = true;
+    } else {
+      changeLineEl.textContent = `Change due: ${money(change)}`;
+      changeLineEl.className = 'change-line ready';
+      chargeBtn.disabled = false;
+    }
+  }
+
+  tenderedEl.addEventListener('input', updateChange);
+  clearBtn.addEventListener('click', clearCart);
+
+  chargeBtn.addEventListener('click', () => {
+    const { due } = getTotals();
+    const tendered = parseFloat(tenderedEl.value);
+    const change = (!isNaN(tendered) && tendered >= due) ? tendered - due : 0;
+    confirmOrderNoEl.textContent = `Order #${orderNumber}`;
+    changeOutEl.textContent = `Change: ${money(change)}`;
+    overlay.classList.add('show');
+  });
+
+  newOrderBtn.addEventListener('click', () => {
+    overlay.classList.remove('show');
+    orderNumber += 1;
+    orderNoEl.textContent = '#' + String(orderNumber).padStart(3, '0');
+    clearCart();
+  });
+
+  // ---------- Clock ----------
+  function tickClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleString(undefined, {
+      weekday: 'short', hour: '2-digit', minute: '2-digit'
+    });
+  }
+  tickClock();
+  setInterval(tickClock, 1000 * 30);
+
+  // ---------- Init ----------
+  orderNoEl.textContent = '#' + String(orderNumber).padStart(3, '0');
+  renderTabs();
+  renderGrid();
+  renderCart();
+</script>
+
+</body>
+</html>
