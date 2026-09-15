@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Simple POS System</title>
+<title>POS System</title>
 <style>
   /* ---------- Basic page styling ---------- */
   body {
@@ -111,12 +111,8 @@
 </style>
 </head>
 <body>
-
-<h1>🛒 Simple POS System</h1>
-
+<h1>🛒POS System</h1>
 <div class="container">
-
-  <!-- ============ LEFT SIDE: PRODUCT LIST ============ -->
   <div class="products">
     <h2>Products</h2>
     <!-- Har button ek product hai. onclick se addToCart() function call hota hai -->
@@ -127,8 +123,6 @@
     <button class="product-btn" onclick="addToCart('Cold Drink', 30)">Cold Drink — ₹30</button>
     <button class="product-btn" onclick="addToCart('Biscuit', 5)">Biscuit — ₹5</button>
   </div>
-
-  <!-- ============ RIGHT SIDE: CART ============ -->
   <div class="cart">
     <h2>Cart</h2>
     <div id="cartItems">
@@ -144,46 +138,30 @@
   </div>
 
 </div>
-
 <script>
-  // ---------- Step 1: Cart data store karne ke liye ek empty array ----------
-  // Har item is array mein { name: "Tea", price: 10 } jaisa dikhega
   let cart = [];
-
-  // ---------- Step 2: Product add karne ka function ----------
   function addToCart(name, price) {
-    cart.push({ name: name, price: price }); // naya item array mein daal do
-    updateCart(); // screen update karo
+    cart.push({ name: name, price: price }); 
+    updateCart(); 
   }
-
-  // ---------- Step 3: Item cart se remove karne ka function ----------
   function removeFromCart(index) {
-    cart.splice(index, 1); // us index ka item hata do
+    cart.splice(index, 1); 
     updateCart();
   }
-
-  // ---------- Step 4: Poora cart khali karne ka function ----------
   function clearCart() {
     cart = [];
     updateCart();
   }
-
-  // ---------- Step 5: Cart ko screen pe dikhane wala function ----------
   function updateCart() {
     const cartItemsDiv = document.getElementById('cartItems');
     const totalAmountSpan = document.getElementById('totalAmount');
-
-    // Agar cart khali hai
     if (cart.length === 0) {
       cartItemsDiv.innerHTML = '<p class="empty-msg">Cart is empty.</p>';
       totalAmountSpan.textContent = '0';
       return;
     }
-
-    // Cart ke saare items ka HTML bana rahe hain
     let html = '';
     let total = 0;
-
     cart.forEach(function(item, index) {
       total = total + item.price;
       html += `
@@ -198,6 +176,5 @@
     totalAmountSpan.textContent = total;
   }
 </script>
-
 </body>
 </html>
