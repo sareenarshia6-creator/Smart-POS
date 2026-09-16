@@ -75,9 +75,11 @@
     cursor: pointer;
     font-size: 14px;
   }
+
   .qty-btn:hover {
     background: #cfcfcf;
   }
+
   .total-row {
     display: flex;
     justify-content: space-between;
@@ -107,7 +109,7 @@
 </style>
 </head>
 <body>
-<h1>🛒POS System</h1>
+<h1>>🛒POS System</h1>
 <div class="container">
   <div class="products">
     <h2>Products</h2>
@@ -131,6 +133,7 @@
   </div>
 </div>
 <script>
+ 
   let cart = [];
   function addToCart(name, price) {
     const existingItem = cart.find(function(item) {
@@ -141,7 +144,7 @@
     } else {
       cart.push({ name: name, price: price, qty: 1 });
     }
-    updateCart(); 
+    updateCart();
   }
   function changeQty(index, amount) {
     cart[index].qty = cart[index].qty + amount; 
@@ -171,13 +174,13 @@
     cart.forEach(function(item, index) {
       const lineTotal = item.price * item.qty;
       total = total + lineTotal;
+
       html += `
         <div class="cart-item">
           <span>${item.name} x${item.qty} — ₹${lineTotal}</span>
           <span>
             <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
             <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-            <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
           </span>
         </div>
       `;
