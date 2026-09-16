@@ -4,20 +4,16 @@
 <meta charset="UTF-8">
 <title>POS System</title>
 <style>
-  /* ---------- Basic page styling ---------- */
   body {
     font-family: Arial, sans-serif;
     background: #f2f2f2;
     margin: 0;
     padding: 20px;
   }
-
   h1 {
     text-align: center;
     color: #333;
   }
-
-  /* Layout: products on left, cart on right */
   .container {
     display: flex;
     gap: 20px;
@@ -25,25 +21,20 @@
     margin: 0 auto;
     flex-wrap: wrap;
   }
-
   .products, .cart {
     background: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   }
-
   .products {
     flex: 2;
     min-width: 280px;
   }
-
   .cart {
     flex: 1;
     min-width: 250px;
   }
-
-  /* Each product button */
   .product-btn {
     display: block;
     width: 100%;
@@ -56,19 +47,15 @@
     cursor: pointer;
     font-size: 15px;
   }
-
   .product-btn:hover {
     background: #dbe6ff;
   }
-
-  /* Each item in the cart */
   .cart-item {
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
     border-bottom: 1px solid #eee;
   }
-
   .remove-btn {
     background: #ffdddd;
     border: none;
@@ -78,7 +65,19 @@
     cursor: pointer;
     margin-left: 8px;
   }
-
+  .qty-btn {
+    background: #e0e0e0;
+    border: none;
+    color: #333;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .qty-btn:hover {
+    background: #cfcfcf;
+  }
   .total-row {
     display: flex;
     justify-content: space-between;
@@ -88,7 +87,6 @@
     padding-top: 10px;
     border-top: 2px solid #333;
   }
-
   .clear-btn {
     width: 100%;
     margin-top: 15px;
@@ -100,11 +98,9 @@
     cursor: pointer;
     font-size: 15px;
   }
-
   .clear-btn:hover {
     background: #555;
   }
-
   .empty-msg {
     color: #888;
   }
@@ -115,7 +111,6 @@
 <div class="container">
   <div class="products">
     <h2>Products</h2>
-    <!-- Har button ek product hai. onclick se addToCart() function call hota hai -->
     <button class="product-btn" onclick="addToCart('Tea', 10)">Tea — ₹10</button>
     <button class="product-btn" onclick="addToCart('Coffee', 20)">Coffee — ₹20</button>
     <button class="product-btn" onclick="addToCart('Samosa', 15)">Samosa — ₹15</button>
@@ -128,21 +123,32 @@
     <div id="cartItems">
       <p class="empty-msg">Cart is empty.</p>
     </div>
-
     <div class="total-row">
       <span>Total</span>
       <span>₹<span id="totalAmount">0</span></span>
     </div>
-
     <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
   </div>
-
 </div>
 <script>
   let cart = [];
   function addToCart(name, price) {
-    cart.push({ name: name, price: price }); 
+    const existingItem = cart.find(function(item) {
+      return item.name === name;
+    });
+    if (existingItem) {
+      existingItem.qty = existingItem.qty + 1;
+    } else {
+      cart.push({ name: name, price: price, qty: 1 });
+    }
     updateCart(); 
+  }
+  function changeQty(index, amount) {
+    cart[index].qty = cart[index].qty + amount; 
+    if (cart[index].qty <= 0) {
+      cart.splice(index, 1);
+    }
+    updateCart();
   }
   function removeFromCart(index) {
     cart.splice(index, 1); 
@@ -163,15 +169,19 @@
     let html = '';
     let total = 0;
     cart.forEach(function(item, index) {
-      total = total + item.price;
+      const lineTotal = item.price * item.qty;
+      total = total + lineTotal;
       html += `
         <div class="cart-item">
-          <span>${item.name} — ₹${item.price}</span>
-          <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
+          <span>${item.name} x${item.qty} — ₹${lineTotal}</span>
+          <span>
+            <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+            <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+            <button class="remove-btn" onclick="removeFromCart(${index})">✕</button>
+          </span>
         </div>
       `;
     });
-
     cartItemsDiv.innerHTML = html;
     totalAmountSpan.textContent = total;
   }
