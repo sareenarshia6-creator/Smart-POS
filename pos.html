@@ -115,19 +115,27 @@
     gap: 8px;
   }
 
-  /* Circular "photo" badge — asli image ki jagah ek colorful circle jisme
-     bada emoji hai, jaisa reference mein circular food photo dikh raha tha.
-     Real photo links use nahi kiye kyunki wo aage chal ke break ho sakte hain,
-     ye hamesha kaam karega, koi internet dependency nahi. */
+  /* Product photo — asli image dikhta hai (loremflickr se, product name ke
+     hisaab se keyword search hoke aati hai). object-fit: cover se image
+     circle ke andar crop ho ke fit ho jaati hai, chahe uska size kuch bhi ho. */
   .product-photo {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    background: linear-gradient(155deg, var(--photo-a, #3A3E46), var(--photo-b, #2C2F35));
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  }
+
+  /* Agar photo load na ho paaye (internet na ho, ya link kaam na kare) toh
+     iski jagah wahi purana colorful emoji-badge dikh jaata hai — kabhi bhi
+     khaali/tooti hui image nahi dikhegi */
+  .photo-fallback {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    background: linear-gradient(145deg, var(--photo-a, #3A3E46), var(--photo-b, #2C2F35));
+    font-size: 30px;
   }
 
   .product-card .pname {
@@ -376,11 +384,11 @@
   // Har category ke andar uske products ki list hai (name + price)
   const CATALOG = {
     "Tea": [
-      { name: "Masala Chai", price: 10, icon: "🍵" },
-      { name: "Ginger Tea", price: 12, icon: "🍵" },
-      { name: "Lemon Tea", price: 12, icon: "🍋" },
-      { name: "Green Tea", price: 15, icon: "🍵" },
-      { name: "Kesar Chai", price: 20, icon: "🍵" },
+      { name: "Masala Chai", price: 10, icon: "🍵", photoCategory: "chai" },
+      { name: "Ginger Tea", price: 12, icon: "🍵", photoCategory: "chai" },
+      { name: "Lemon Tea", price: 12, icon: "🍋", photoCategory: "chai" },
+      { name: "Green Tea", price: 15, icon: "🍵", photoCategory: "chai" },
+      { name: "Kesar Chai", price: 20, icon: "🍵", photoCategory: "chai" },
     ],
     "Coffee": [
       { name: "Black Coffee", price: 15, icon: "☕" },
@@ -399,27 +407,27 @@
       { name: "Mojito", price: 40, icon: "🍹" },
     ],
     "Snacks": [
-      { name: "Samosa", price: 15, veg: true, icon: "🥟" },
+      { name: "Samosa", price: 15, veg: true, icon: "🥟", photoCategory: "samosa" },
       { name: "Veg Sandwich", price: 35, veg: true, icon: "🥪" },
       { name: "Chicken Sandwich", price: 50, veg: false, icon: "🥪" },
       { name: "Biscuit", price: 5, veg: true, icon: "🍪" },
     ],
     "Pizza": [
-      { name: "Margherita Pizza", price: 140, veg: true, icon: "🍕" },
-      { name: "Farmhouse Pizza", price: 170, veg: true, icon: "🍕" },
-      { name: "Paneer Tikka Pizza", price: 180, veg: true, icon: "🍕" },
-      { name: "Chicken Pizza", price: 180, veg: false, icon: "🍕" },
-      { name: "Pepperoni Pizza", price: 200, veg: false, icon: "🍕" },
+      { name: "Margherita Pizza", price: 140, veg: true, icon: "🍕", photoCategory: "pizza" },
+      { name: "Farmhouse Pizza", price: 170, veg: true, icon: "🍕", photoCategory: "pizza" },
+      { name: "Paneer Tikka Pizza", price: 180, veg: true, icon: "🍕", photoCategory: "pizza" },
+      { name: "Chicken Pizza", price: 180, veg: false, icon: "🍕", photoCategory: "pizza" },
+      { name: "Pepperoni Pizza", price: 200, veg: false, icon: "🍕", photoCategory: "pizza" },
     ],
     "Fast Food": [
-      { name: "Veg Burger", price: 55, veg: true, icon: "🍔" },
-      { name: "Chicken Burger", price: 75, veg: false, icon: "🍔" },
+      { name: "Veg Burger", price: 55, veg: true, icon: "🍔", photoCategory: "burger" },
+      { name: "Chicken Burger", price: 75, veg: false, icon: "🍔", photoCategory: "burger" },
       { name: "Fries", price: 50, veg: true, icon: "🍟" },
-      { name: "Veg Pasta", price: 90, veg: true, icon: "🍝" },
+      { name: "Veg Pasta", price: 90, veg: true, icon: "🍝", photoCategory: "pasta" },
       { name: "Garlic Bread", price: 70, veg: true, icon: "🥖" },
       { name: "Chicken Hot Dog", price: 65, veg: false, icon: "🌭" },
       { name: "Nachos", price: 65, veg: true, icon: "🧀" },
-      { name: "Spring Rolls", price: 60, veg: true, icon: "🥢" },
+      { name: "Spring Rolls", price: 60, veg: true, icon: "🥢", photoCategory: "momos" },
     ],
   };
 
@@ -483,6 +491,8 @@
     const gridDiv = document.getElementById('grid');
     gridDiv.innerHTML = '';
 
+    const colors = CATEGORY_STYLE[activeCategory].color;
+
     CATALOG[activeCategory].forEach(function(product) {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -496,13 +506,41 @@
         icon = '<span class="nonveg-icon"></span>';
       }
 
+      // Photo ki jagah — shuru mein colorful icon-badge dikhta hai.
+      // Agar us product ke liye ek verified photoCategory hai, toh ye badge
+      // async fetch complete hone ke baad real photo se replace ho jaayega.
+      const photoHtml = `<div class="product-photo photo-fallback" style="--photo-a:${colors[0]};--photo-b:${colors[1]}">${product.icon || '🍽️'}</div>`;
+
       card.innerHTML = `
+        ${photoHtml}
         <div class="pname">${icon}${product.name}</div>
         <div class="prow">
           <span class="pprice">₹${product.price}</span>
           <button class="add-btn">+ ADD</button>
         </div>
       `;
+
+      // Agar is product ke liye accurate photo category hai, toh Foodish API se
+      // asli photo mangwate hain. Ye ek "asynchronous" call hai — matlab result
+      // turant nahi aata, thodi der baad aata hai, isliye .then() ke andar
+      // photo ko badge ki jagah lagate hain jab wo aa jaaye.
+      if (product.photoCategory) {
+        fetch('https://foodish-api.com/api/images/' + product.photoCategory)
+          .then(function(response) { return response.json(); })
+          .then(function(data) {
+            const img = document.createElement('img');
+            img.className = 'product-photo';
+            img.src = data.image;
+            img.alt = product.name;
+            img.loading = 'lazy';
+            card.querySelector('.product-photo').replaceWith(img);
+          })
+          .catch(function() {
+            // Fetch fail ho gaya (internet nahi hai, ya API down hai) —
+            // koi baat nahi, icon-badge waisi hi dikhti rahegi
+          });
+      }
+
       // ADD button ko click event manually jodna (kyunki naam mein spaces ho sakte hain, jaise "Cold Drink")
       card.querySelector('.add-btn').onclick = function() {
         addToCart(product.name, product.price, product.icon);
@@ -573,7 +611,7 @@
         const lineTotal = item.price * item.qty;
         html += `
           <div class="cart-item">
-            <span>${item.name} x${item.qty} — ₹${lineTotal}</span>
+            <span><span class="cart-picon">${item.icon || ''}</span>${item.name} x${item.qty} — ₹${lineTotal}</span>
             <span>
               <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
               <input type="number" class="qty-input" value="${item.qty}" min="0" onchange="setQty(${index}, this.value)">
