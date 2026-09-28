@@ -4,53 +4,190 @@
 <meta charset="UTF-8">
 <title>POS System</title>
 <style>
-  /* ---------- Color palette ----------
-     Saare colors ek jagah rakhe hain (CSS variables) taaki
-     future mein badalna ho toh sirf yahan change karna padega. */
   :root {
-    --bg: #1C1E22;              /* poore page ka background (dark charcoal) */
-    --card: #24272C;            /* products area ka background */
-    --card-item: #2C2F35;       /* har product card ka background */
-    --card-border: #34373D;     /* borders dark side pe */
-    --amber: #E3A438;           /* main accent — active tab, heading */
-    --green: #3FAE6B;           /* ADD button ka color (image 1 se liya) */
-    --green-dark: #2F8C55;      /* ADD button hover */
-    --text-light: #ECEDEE;      /* dark background pe text */
+    --bg: #1C1E22;              
+    --card: #24272C;            
+    --card-item: #2C2F35;       
+    --card-border: #34373D;     
+    --amber: #E3A438;           
+    --green: #3FAE6B;           
+    --green-dark: #2F8C55;      
+    --text-light: #ECEDEE;      
     --text-light-muted: #9A9EA6;
-
-    --paper: #F6F1E7;           /* order panel ka background (cream/paper) */
+    --paper: #F6F1E7;           
     --paper-border: #DED2B8;
-    --paper-ink: #2B2620;       /* paper ke upar text */
+    --paper-ink: #2B2620;       
     --paper-ink-muted: #8A8070;
 
     --danger: #C96A5A;
   }
-
   * { box-sizing: border-box; }
-
+  .app-shell {
+    display: flex;
+    min-height: 100vh;
+  }
+  .sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--card-border);
+    padding: 22px 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--amber);
+    font-size: 17px;
+    margin: 0 8px 30px;
+  }
+  .sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--text-light-muted);
+    font-size: 14px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+  }
+  .nav-item svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    flex-shrink: 0;
+  }
+  .nav-item:hover:not(.active) {
+    background: var(--card-item);
+    color: var(--text-light);
+  }
+  .nav-item.active {
+    background: rgba(227, 164, 56, 0.12);
+    color: var(--amber);
+    font-weight: 600;
+  }
+  .sidebar .logout {
+    margin-top: auto;
+  }
+  .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 22px 28px;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--card-item);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 9px 14px;
+    flex: 1;
+    max-width: 340px;
+    color: var(--text-light-muted);
+  }
+  .search-box svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-light);
+    font-size: 14px;
+    width: 100%;
+    font-family: inherit;
+  }
+  .user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user-info {
+    text-align: right;
+    line-height: 1.35;
+  }
+  .user-info .uname {
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .user-info .ustatus {
+    color: var(--text-light-muted);
+    font-size: 11.5px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--danger));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1C1E22;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .bell-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card-item);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .bell-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+  }
   body {
     font-family: Arial, sans-serif;
     background: var(--bg);
     margin: 0;
-    padding: 20px;
+    padding: 0;
     color: var(--text-light);
   }
-
   h1 {
     text-align: center;
     color: var(--amber);
     margin-bottom: 20px;
   }
-
   .container {
     display: flex;
     gap: 20px;
-    max-width: 950px;
-    margin: 0 auto;
     flex-wrap: wrap;
   }
-
-  /* ============ LEFT: Products area ============ */
   .products {
     flex: 2;
     min-width: 300px;
@@ -59,15 +196,12 @@
     border-radius: 10px;
     padding: 18px;
   }
-
-  /* Category tabs — ab icon + naam dono, reference image jaisa column layout */
   .tabs {
     display: flex;
     gap: 8px;
     margin-bottom: 18px;
     flex-wrap: wrap;
   }
-
   .tab-btn {
     background: transparent;
     border: 1px solid var(--card-border);
@@ -82,27 +216,22 @@
     gap: 6px;
     min-width: 64px;
   }
-
   .tab-btn svg {
     width: 20px;
     height: 20px;
     stroke: currentColor;
   }
-
   .tab-btn.active {
     background: rgba(227, 164, 56, 0.12);
     border-color: var(--amber);
     color: var(--amber);
     font-weight: bold;
   }
-
-  /* Products grid (image 1 jaisa card layout, stacked list ki jagah) */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 12px;
   }
-
   .product-card {
     background: var(--card-item);
     border: 1px solid var(--card-border);
@@ -114,10 +243,6 @@
     text-align: center;
     gap: 8px;
   }
-
-  /* Product photo — asli image dikhta hai (loremflickr se, product name ke
-     hisaab se keyword search hoke aati hai). object-fit: cover se image
-     circle ke andar crop ho ke fit ho jaati hai, chahe uska size kuch bhi ho. */
   .product-photo {
     width: 64px;
     height: 64px;
@@ -127,17 +252,12 @@
     background: linear-gradient(155deg, var(--photo-a, #3A3E46), var(--photo-b, #2C2F35));
     box-shadow: 0 3px 6px rgba(0,0,0,0.3);
   }
-
-  /* Agar photo load na ho paaye (internet na ho, ya link kaam na kare) toh
-     iski jagah wahi purana colorful emoji-badge dikh jaata hai — kabhi bhi
-     khaali/tooti hui image nahi dikhegi */
   .photo-fallback {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 30px;
   }
-
   .product-card .pname {
     font-size: 13.5px;
     color: var(--text-light);
@@ -147,15 +267,10 @@
     gap: 5px;
     line-height: 1.3;
   }
-
-  /* Cart ki list mein icon thoda chhota rakha (paper panel choti jagah hai) */
   .cart-picon {
     font-size: 16px;
     margin-right: 3px;
   }
-
-  /* Veg/non-veg indicator — standard green/brown square with a dot inside,
-     jaisa Indian restaurant menus mein dikhta hai */
   .veg-icon, .nonveg-icon {
     width: 11px;
     height: 11px;
@@ -165,11 +280,9 @@
     justify-content: center;
     flex-shrink: 0;
   }
-
   .veg-icon {
     border-color: #2E9E4F;
   }
-
   .veg-icon::after {
     content: "";
     width: 5px;
@@ -177,11 +290,9 @@
     border-radius: 50%;
     background: #2E9E4F;
   }
-
   .nonveg-icon {
     border-color: #A0342A;
   }
-
   .nonveg-icon::after {
     content: "";
     width: 0;
@@ -190,7 +301,6 @@
     border-right: 4px solid transparent;
     border-bottom: 6px solid #A0342A;
   }
-
   .product-card .prow {
     display: flex;
     flex-direction: column;
@@ -198,13 +308,10 @@
     gap: 8px;
     width: 100%;
   }
-
   .product-card .pprice {
     color: var(--amber);
     font-size: 14px;
   }
-
-  /* ADD button — image 1 se liya green pill style, ab poori width */
   .add-btn {
     background: var(--green);
     color: white;
@@ -219,12 +326,9 @@
     justify-content: center;
     gap: 4px;
   }
-
   .add-btn:hover {
     background: var(--green-dark);
   }
-
-  /* ============ RIGHT: Order panel (image 2 jaisa cream panel) ============ */
   .order-panel {
     flex: 1;
     min-width: 260px;
@@ -235,13 +339,11 @@
     display: flex;
     flex-direction: column;
   }
-
   .order-panel h2 {
     color: var(--paper-ink);
     font-size: 16px;
     margin: 0 0 12px;
   }
-
   .cart-item {
     display: flex;
     justify-content: space-between;
@@ -251,7 +353,6 @@
     color: var(--paper-ink);
     font-size: 14px;
   }
-
   .qty-btn {
     background: #FFFFFF;
     border: 1px solid var(--paper-border);
@@ -262,13 +363,11 @@
     cursor: pointer;
     font-size: 13px;
   }
-
   .qty-btn:hover {
     background: var(--amber);
     border-color: var(--amber);
     color: #fff;
   }
-
   .qty-input {
     width: 34px;
     height: 22px;
@@ -280,27 +379,22 @@
     color: var(--paper-ink);
     background: #FFFFFF;
   }
-
   .qty-input::-webkit-outer-spin-button,
   .qty-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-
   .empty-msg {
     color: var(--paper-ink-muted);
     text-align: center;
     padding: 20px 0;
     font-size: 14px;
   }
-
-  /* Subtotal / Tax / Due breakdown — image 2 se liya */
   .totals {
     margin-top: 14px;
     padding-top: 12px;
     border-top: 1px dashed var(--paper-border);
   }
-
   .totals-row {
     display: flex;
     justify-content: space-between;
@@ -308,7 +402,6 @@
     color: var(--paper-ink-muted);
     padding: 3px 0;
   }
-
   .totals-row.due {
     color: var(--paper-ink);
     font-size: 19px;
@@ -317,7 +410,6 @@
     margin-top: 6px;
     padding-top: 8px;
   }
-
   .clear-btn {
     width: 100%;
     margin-top: 16px;
@@ -329,36 +421,49 @@
     cursor: pointer;
     font-size: 15px;
   }
-
   .clear-btn:hover {
     background: #000000;
   }
 </style>
 </head>
 <body>
-
-<h1>🛒 POS System</h1>
-
-<div class="container">
-
-  <!-- ============ LEFT SIDE: Categories + Products ============ -->
+<div class="app-shell">
+  <!-- ============ SIDEBAR (left navigation) ============ -->
+  <div class="sidebar">
+    <div class="logo">🍽️ Foodlogo</div>
+    <nav>
+      <button class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        Menu
+      </button>
+      <button class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M4 12h1M19 12h1M12 4v1M12 19v1M6.3 6.3l.7.7M17 17l.7.7M17.7 6.3l-.7.7M6.3 17.7l.7-.7"/></svg>
+        Setting
+      </button>
+      <button class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 4"/><path d="M12 16.5v.1"/></svg>
+        Help Center
+      </button>
+    </nav>
+  </div>
+  <div class="main-content">
+    <div class="topbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search menu">
+      </div>
+    </div>
+    <div class="container">
   <div class="products">
 
-    <!-- Category tabs. Click karne se sirf us category ke products dikhte hain -->
     <div class="tabs" id="tabs"></div>
-
-    <!-- Products yahan JavaScript se render honge -->
     <div class="grid" id="grid"></div>
   </div>
-
-  <!-- ============ RIGHT SIDE: Order panel ============ -->
   <div class="order-panel">
     <h2>Current Order</h2>
-
     <div id="cartItems">
       <p class="empty-msg">No items yet.<br>Tap ADD on a product.</p>
     </div>
-
     <div class="totals">
       <div class="totals-row">
         <span>Subtotal</span>
@@ -376,12 +481,11 @@
 
     <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
   </div>
-
+    </div>
+  </div>
 </div>
 
 <script>
-  // ---------- Step 1: Products ko categories mein baanta gaya ----------
-  // Har category ke andar uske products ki list hai (name + price)
   const CATALOG = {
     "Tea": [
       { name: "Masala Chai", price: 10, icon: "🍵", photoCategory: "chai" },
@@ -430,12 +534,7 @@
       { name: "Spring Rolls", price: 60, veg: true, icon: "🥢", photoCategory: "momos" },
     ],
   };
-
-  const TAX_RATE = 0.05; // 5% tax
-
-  // ---------- Category icons + photo colors ----------
-  // Har category ke liye ek simple outline SVG icon (reference image jaisa)
-  // aur ek gradient color-pair, jo product photo-badge ke background mein use hoga
+  const TAX_RATE = 0.05; 
   const CATEGORY_STYLE = {
     "Tea": {
       color: ["#5A4632", "#3E3122"],
@@ -462,55 +561,37 @@
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 10a8 5 0 0 1 16 0Z"/><path d="M3 10h18M4 13h16a1 1 0 0 1 1 1 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1Z"/></svg>'
     }
   };
-
-  // ---------- Step 2: State — abhi kaunsi category dikh rahi hai, cart mein kya hai ----------
-  let activeCategory = Object.keys(CATALOG)[0]; // pehli category default mein selected
+  let activeCategory = Object.keys(CATALOG)[0]; 
   let cart = [];
-
-  // ---------- Step 3: Category tabs banana ----------
   function renderTabs() {
     const tabsDiv = document.getElementById('tabs');
     tabsDiv.innerHTML = '';
-
     Object.keys(CATALOG).forEach(function(category) {
       const btn = document.createElement('button');
       btn.className = 'tab-btn' + (category === activeCategory ? ' active' : '');
-      // Icon upar, naam neeche — reference image jaisa layout
       btn.innerHTML = CATEGORY_STYLE[category].svg + '<span>' + category + '</span>';
       btn.onclick = function() {
         activeCategory = category;
-        renderTabs();  // active tab ka highlight update karo
-        renderGrid();  // us category ke products dikhao
+        renderTabs();  
+        renderGrid();  
       };
       tabsDiv.appendChild(btn);
     });
   }
-
-  // ---------- Step 4: Selected category ke products dikhana ----------
   function renderGrid() {
     const gridDiv = document.getElementById('grid');
     gridDiv.innerHTML = '';
-
     const colors = CATEGORY_STYLE[activeCategory].color;
-
     CATALOG[activeCategory].forEach(function(product) {
       const card = document.createElement('div');
       card.className = 'product-card';
-
-      // Sirf un items pe icon dikhega jinke liye veg property set ki gayi hai
-      // (Tea/Coffee/Cold Drinks mein veg property hi nahi hai, isliye unpe icon nahi aayega)
       let icon = '';
       if (product.veg === true) {
         icon = '<span class="veg-icon"></span>';
       } else if (product.veg === false) {
         icon = '<span class="nonveg-icon"></span>';
       }
-
-      // Photo ki jagah — shuru mein colorful icon-badge dikhta hai.
-      // Agar us product ke liye ek verified photoCategory hai, toh ye badge
-      // async fetch complete hone ke baad real photo se replace ho jaayega.
       const photoHtml = `<div class="product-photo photo-fallback" style="--photo-a:${colors[0]};--photo-b:${colors[1]}">${product.icon || '🍽️'}</div>`;
-
       card.innerHTML = `
         ${photoHtml}
         <div class="pname">${icon}${product.name}</div>
@@ -519,11 +600,6 @@
           <button class="add-btn">+ ADD</button>
         </div>
       `;
-
-      // Agar is product ke liye accurate photo category hai, toh Foodish API se
-      // asli photo mangwate hain. Ye ek "asynchronous" call hai — matlab result
-      // turant nahi aata, thodi der baad aata hai, isliye .then() ke andar
-      // photo ko badge ki jagah lagate hain jab wo aa jaaye.
       if (product.photoCategory) {
         fetch('https://foodish-api.com/api/images/' + product.photoCategory)
           .then(function(response) { return response.json(); })
@@ -536,73 +612,52 @@
             card.querySelector('.product-photo').replaceWith(img);
           })
           .catch(function() {
-            // Fetch fail ho gaya (internet nahi hai, ya API down hai) —
-            // koi baat nahi, icon-badge waisi hi dikhti rahegi
           });
       }
-
-      // ADD button ko click event manually jodna (kyunki naam mein spaces ho sakte hain, jaise "Cold Drink")
       card.querySelector('.add-btn').onclick = function() {
         addToCart(product.name, product.price, product.icon);
       };
       gridDiv.appendChild(card);
     });
   }
-
-  // ---------- Step 5: Product cart mein add karna ----------
   function addToCart(name, price, icon) {
     const existingItem = cart.find(function(item) {
       return item.name === name;
     });
-
     if (existingItem) {
       existingItem.qty = existingItem.qty + 1;
     } else {
       cart.push({ name: name, price: price, qty: 1, icon: icon });
     }
-
     updateCart();
   }
-
-  // ---------- Step 6: Quantity +/- se badalna ----------
   function changeQty(index, amount) {
     cart[index].qty = cart[index].qty + amount;
 
     if (cart[index].qty <= 0) {
       cart.splice(index, 1);
     }
-
     updateCart();
   }
-
-  // ---------- Step 7: Quantity seedha type karke set karna ----------
   function setQty(index, newValue) {
     const newQty = parseInt(newValue);
-
     if (isNaN(newQty)) {
       updateCart();
       return;
     }
-
     if (newQty <= 0) {
       cart.splice(index, 1);
     } else {
       cart[index].qty = newQty;
     }
-
     updateCart();
   }
-
-  // ---------- Step 8: Poora cart khali karna ----------
   function clearCart() {
     cart = [];
     updateCart();
   }
-
-  // ---------- Step 9: Order panel ko screen pe update karna ----------
   function updateCart() {
     const cartItemsDiv = document.getElementById('cartItems');
-
     if (cart.length === 0) {
       cartItemsDiv.innerHTML = '<p class="empty-msg">No items yet.<br>Tap ADD on a product.</p>';
     } else {
@@ -622,24 +677,18 @@
       });
       cartItemsDiv.innerHTML = html;
     }
-
-    // ---- Subtotal, Tax aur Due calculate karna ----
     const subtotal = cart.reduce(function(sum, item) {
       return sum + (item.price * item.qty);
     }, 0);
     const tax = subtotal * TAX_RATE;
     const due = subtotal + tax;
-
     document.getElementById('subtotal').textContent = subtotal.toFixed(2);
     document.getElementById('tax').textContent = tax.toFixed(2);
     document.getElementById('due').textContent = due.toFixed(2);
   }
-
-  // ---------- Init: page load hote hi tabs aur products dikhao ----------
   renderTabs();
   renderGrid();
   updateCart();
 </script>
-
 </body>
 </html>
