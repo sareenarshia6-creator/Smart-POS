@@ -18,7 +18,6 @@
     --paper-border: #DED2B8;
     --paper-ink: #2B2620;       
     --paper-ink-muted: #8A8070;
-
     --danger: #C96A5A;
   }
   * { box-sizing: border-box; }
@@ -127,18 +126,10 @@
     color: var(--text-light);
   }
   
-  /* Views (To toggle between Menu, Setting and Help Center) */
-  .view-section {
-    display: none; 
-  }
-  .view-section.active {
-    display: flex; 
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .full-width-view.active {
-    display: block; 
-  }
+  /* Views */
+  .view-section { display: none; }
+  .view-section.active { display: flex; gap: 20px; flex-wrap: wrap; }
+  .full-width-view.active { display: block; }
 
   .products {
     flex: 2;
@@ -168,11 +159,7 @@
     gap: 6px;
     min-width: 64px;
   }
-  .tab-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-  }
+  .tab-btn svg { width: 20px; height: 20px; stroke: currentColor; }
   .tab-btn.active {
     background: rgba(227, 164, 56, 0.12);
     border-color: var(--amber);
@@ -218,19 +205,6 @@
     border-radius: 6px;
     margin-right: 8px;
   }
-  .veg-icon, .nonveg-icon {
-    width: 11px;
-    height: 11px;
-    border: 1.5px solid;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .veg-icon { border-color: #2E9E4F; }
-  .veg-icon::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #2E9E4F; }
-  .nonveg-icon { border-color: #A0342A; }
-  .nonveg-icon::after { content: ""; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid #A0342A; }
   .product-card .prow {
     display: flex;
     flex-direction: column;
@@ -238,10 +212,7 @@
     gap: 8px;
     width: 100%;
   }
-  .product-card .pprice {
-    color: var(--amber);
-    font-size: 14px;
-  }
+  .product-card .pprice { color: var(--amber); font-size: 14px; }
   .add-btn {
     background: var(--green);
     color: white;
@@ -330,20 +301,71 @@
     margin-top: 6px;
     padding-top: 8px;
   }
-  .clear-btn {
-    width: 100%;
+  .action-btns {
+    display: flex;
+    gap: 8px;
     margin-top: 16px;
+  }
+  .print-btn {
+    flex: 1;
+    padding: 10px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .print-btn:hover { background: var(--green-dark); }
+  .clear-btn {
+    flex: 1;
     padding: 10px;
     background: var(--paper-ink);
     color: var(--paper);
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
   }
   .clear-btn:hover { background: #000000; }
 
-  /* Help & Settings Common Container */
+  /* Modal / Bill Preview Overlay Styles */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-content {
+    background: var(--paper);
+    color: var(--paper-ink);
+    padding: 24px;
+    border-radius: 12px;
+    width: 360px;
+    max-width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    font-family: monospace;
+  }
+  .modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
+  .modal-btn-green { background: var(--green); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13.5px; }
+  .modal-btn-green:hover { background: var(--green-dark); }
+  .modal-btn-dark { background: var(--paper-ink); color: var(--paper); border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13.5px; }
+  .modal-btn-dark:hover { background: #000; }
+  .modal-btn-danger { background: var(--danger); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13.5px; }
+  .modal-btn-danger:hover { opacity: 0.9; }
+
+  /* Help & Settings Styles */
   .page-container {
     background: var(--card);
     border: 1px solid var(--card-border);
@@ -356,18 +378,9 @@
     border-bottom: 1px solid var(--card-border);
     padding-bottom: 16px;
   }
-  .page-header h2 {
-    color: var(--amber);
-    margin: 0 0 8px 0;
-    font-size: 22px;
-  }
-  .page-header p {
-    color: var(--text-light-muted);
-    margin: 0;
-    font-size: 14px;
-  }
+  .page-header h2 { color: var(--amber); margin: 0 0 8px 0; font-size: 22px; }
+  .page-header p { color: var(--text-light-muted); margin: 0; font-size: 14px; }
   
-  /* FAQ Styles */
   .faq-item {
     background: var(--card-item);
     border: 1px solid var(--card-border);
@@ -389,17 +402,8 @@
   }
   .support-contact svg { width: 32px; height: 32px; stroke: var(--amber); flex-shrink: 0; }
 
-  /* Setting Form Styles */
-  .setting-group {
-    margin-bottom: 20px;
-  }
-  .setting-group label {
-    display: block;
-    color: var(--text-light);
-    font-size: 13.5px;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
+  .setting-group { margin-bottom: 20px; }
+  .setting-group label { display: block; color: var(--text-light); font-size: 13.5px; margin-bottom: 8px; font-weight: 600; }
   .setting-input, .setting-select {
     width: 100%;
     background: var(--card-item);
@@ -411,9 +415,7 @@
     outline: none;
     font-family: inherit;
   }
-  .setting-input:focus, .setting-select:focus {
-    border-color: var(--amber);
-  }
+  .setting-input:focus, .setting-select:focus { border-color: var(--amber); }
   .save-settings-btn {
     background: var(--green);
     color: white;
@@ -426,12 +428,24 @@
     margin-top: 10px;
   }
   .save-settings-btn:hover { background: var(--green-dark); }
+
+  /* Print Styles */
+  @media print {
+    body * { visibility: hidden; }
+    #billModal, #billModal * { visibility: visible; }
+    #billModal {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      background: white; display: flex !important; align-items: flex-start; justify-content: center;
+    }
+    .modal-actions { display: none !important; }
+    .modal-content { box-shadow: none; border: none; width: 100%; }
+  }
 </style>
 </head>
 <body>
 <div class="app-shell">
   <div class="sidebar">
-    <div class="logo">🍽️ Foodlogo</div>
+    <div class="logo" id="sidebarLogo">🍽️ Foodlogo</div>
     <nav>
       <button class="nav-item active" id="nav-menu" onclick="switchTab('menu')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
@@ -452,7 +466,7 @@
     <div class="topbar">
       <div class="search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="text" placeholder="Search menu">
+        <input type="text" id="searchInput" placeholder="Search menu..." oninput="handleSearch(this.value)">
       </div>
     </div>
 
@@ -481,7 +495,10 @@
             <span><span id="currencySymbolDue">₹</span><span id="due">0</span></span>
           </div>
         </div>
-        <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+        <div class="action-btns">
+          <button class="print-btn" onclick="openBillPreview()">Print Bill</button>
+          <button class="clear-btn" onclick="clearCart()">Clear</button>
+        </div>
       </div>
     </div>
 
@@ -492,12 +509,10 @@
           <h2>System Settings</h2>
           <p>Configure your restaurant details, tax rules, and receipt preferences.</p>
         </div>
-        
         <div class="setting-group">
           <label>Restaurant / Store Name</label>
           <input type="text" id="settingStoreName" class="setting-input" value="Foodlogo Café">
         </div>
-
         <div class="setting-group">
           <label>Currency</label>
           <select id="settingCurrency" class="setting-select">
@@ -507,12 +522,10 @@
             <option value="£">£ (GBP - British Pound)</option>
           </select>
         </div>
-
         <div class="setting-group">
           <label>Tax Rate (%)</label>
           <input type="number" id="settingTaxRate" class="setting-input" value="5" min="0" max="100" step="0.5">
         </div>
-
         <button class="save-settings-btn" onclick="saveSettings()">Save Settings</button>
       </div>
     </div>
@@ -524,40 +537,33 @@
           <h2>Help & Support</h2>
           <p>Find answers to common issues or contact our support team.</p>
         </div>
-        
         <div class="faq-item">
-          <h3 class="faq-q">How do I add items to the cart?</h3>
-          <p class="faq-a">Navigate to the 'Menu' tab, select your category, and click the '+ ADD' button on any product.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">Can I change the quantity of an item?</h3>
-          <p class="faq-a">Yes! In the 'Current Order' panel, use the + and - buttons or directly edit the number box.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3 class="faq-q">How do I update tax or currency settings?</h3>
-          <p class="faq-a">Go to the 'Setting' tab from the sidebar, update your desired values, and click 'Save Settings'.</p>
-        </div>
-
-        <div class="support-contact">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
-          <div>
-            <h3 style="margin: 0 0 4px 0; color: var(--amber); font-size: 15px;">Need more help?</h3>
-            <p style="margin: 0; color: var(--text-light); font-size: 13px;">Call Support: +91 98765-43210</p>
-            <p style="margin: 2px 0 0 0; color: var(--text-light); font-size: 13px;">Email: support@foodlogo.com</p>
-          </div>
+          <h3 class="faq-q">How do I preview and print the bill?</h3>
+          <p class="faq-a">Click 'Print Bill' to open the bill preview. From there, you can choose to print, add more items, or clear the order.</p>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- BILL PREVIEW MODAL -->
+<div class="modal-overlay" id="billModal">
+  <div class="modal-content">
+    <div id="receiptBody"></div>
+    <div class="modal-actions">
+      <button class="modal-btn-green" onclick="triggerActualPrint()">Print Receipt</button>
+      <button class="modal-btn-dark" onclick="closeBillPreview()">Add Anything / Back</button>
+      <button class="modal-btn-danger" onclick="clearCartAndCloseModal()">Clear Cart</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  let TAX_RATE = 0.05; // 5% default
+  let TAX_RATE = 0.05; 
   let CURRENCY = "₹";
+  let STORE_NAME = "Foodlogo Café";
+  let searchQuery = "";
 
   function switchTab(tabName) {
     document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -575,8 +581,14 @@
     }
   }
 
+  function handleSearch(query) {
+    searchQuery = query.toLowerCase().trim();
+    switchTab('menu');
+    renderGrid();
+  }
+
   function saveSettings() {
-    const storeName = document.getElementById('settingStoreName').value;
+    STORE_NAME = document.getElementById('settingStoreName').value || "Foodlogo Café";
     CURRENCY = document.getElementById('settingCurrency').value;
     const taxInput = parseFloat(document.getElementById('settingTaxRate').value);
 
@@ -585,28 +597,92 @@
       document.getElementById('taxLabel').textContent = taxInput;
     }
 
-    // Update Currency symbols in UI
     document.getElementById('currencySymbol').textContent = CURRENCY;
     document.getElementById('currencySymbolTax').textContent = CURRENCY;
     document.getElementById('currencySymbolDue').textContent = CURRENCY;
-
-    // Update Logo text if needed
-    if(storeName) {
-      document.querySelector('.sidebar .logo').innerHTML = '🍽️ ' + storeName;
-    }
+    document.getElementById('sidebarLogo').innerHTML = '🍽️ ' + STORE_NAME;
 
     alert('Settings saved successfully!');
     updateCart();
     switchTab('menu');
   }
 
+  function openBillPreview() {
+    if (cart.length === 0) {
+      alert("Cart is empty! Please add items first.");
+      return;
+    }
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const tax = subtotal * TAX_RATE;
+    const due = subtotal + tax;
+    const dateStr = new Date().toLocaleString();
+
+    let receiptHTML = `
+      <div style="text-align: center; margin-bottom: 12px;">
+        <h2 style="margin: 0; font-size: 16px;">${STORE_NAME}</h2>
+        <p style="margin: 3px 0; font-size: 11px;">Date: ${dateStr}</p>
+        <p style="margin: 0; font-size: 11px;">--------------------------------</p>
+      </div>
+      <div style="font-size: 12px; margin-bottom: 12px;">
+    `;
+
+    cart.forEach(item => {
+      const lineTotal = item.price * item.qty;
+      receiptHTML += `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>${item.name} x${item.qty}</span>
+          <span>${CURRENCY}${lineTotal.toFixed(2)}</span>
+        </div>
+      `;
+    });
+
+    receiptHTML += `
+      </div>
+      <div style="font-size: 12px; border-top: 1px dashed black; padding-top: 6px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+          <span>Subtotal:</span>
+          <span>${CURRENCY}${subtotal.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+          <span>Tax (${(TAX_RATE * 100)}%):</span>
+          <span>${CURRENCY}${tax.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 5px; border-top: 1px solid black; padding-top: 5px;">
+          <span>Total Due:</span>
+          <span>${CURRENCY}${due.toFixed(2)}</span>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 15px; font-size: 11px;">
+        <p style="margin: 2px 0;">Thank you for your visit!</p>
+        <p style="margin: 2px 0;">Please come again.</p>
+      </div>
+    `;
+
+    document.getElementById('receiptBody').innerHTML = receiptHTML;
+    document.getElementById('billModal').classList.add('active');
+  }
+
+  function closeBillPreview() {
+    document.getElementById('billModal').classList.remove('active');
+  }
+
+  function clearCartAndCloseModal() {
+    clearCart();
+    closeBillPreview();
+  }
+
+  function triggerActualPrint() {
+    window.print();
+  }
+
   const CATALOG = {
     "Tea": [
-      { name: "Masala Chai", price: 10, icon: "images/mc.jpg", photoCategory: "chai" },
-      { name: "Ginger Tea", price: 12, icon: "images/gt.jpg", photoCategory: "chai" },
-      { name: "Lemon Tea", price: 12, icon: "images/lt.jpg", photoCategory: "chai" },
-      { name: "Green Tea", price: 15, icon: "images/greent.jpg", photoCategory: "chai" },
-      { name: "Kesar Chai", price: 20, icon: "images/kt.jpg", photoCategory: "chai" },
+      { name: "Masala Chai", price: 10, icon: "images/mc.jpg" },
+      { name: "Ginger Tea", price: 12, icon: "images/gt.jpg" },
+      { name: "Lemon Tea", price: 12, icon: "images/lt.jpg" },
+      { name: "Green Tea", price: 15, icon: "images/greent.jpg" },
+      { name: "Kesar Chai", price: 20, icon: "images/kt.jpg" },
     ],
     "Coffee": [
       { name: "Black Coffee", price: 15, icon: "images/coffee.jpg" },
@@ -625,61 +701,37 @@
       { name: "Mojito", price: 40, icon: "images/mojito.jpg" },
     ],
     "Appitizers": [
-      { name: "Samosa", price: 15, veg: true, icon: "images/samosa.jpg", photoCategory: "samosa" },
-      { name: "Fries", price: 50, veg: true, icon: "images/fries.jpg" },
-      { name: "Peri Peri Fries", price: 60, veg: true, icon: "images/ppfries.jpg" },
-      { name: "Butter Chicken Fries", price: 80, veg: false, icon: "images/bcfries.jpg" },
-      { name: "Pasta", price: 100, veg: true, icon: "images/pasta.jpg", photoCategory: "pasta" },
-      { name: "Nachos", price: 90, veg: true, icon: "images/nachos.jpg" },
-      { name: "Spring Rolls", price: 60, veg: true, icon: "images/spring.jpg", photoCategory: "momos" },
-      { name: "Green & Garden Salad", price: 100, veg: true, icon: "images/ggsalad.jpg", photoCategory: "momos" },
-      { name: "Protein & Legume Salad", price: 120, veg: true, icon: "images/pls.jpg", photoCategory: "momos" },
-      { name: "Chicken Salad", price: 120, veg: false, icon: "images/csalad.jpg", photoCategory: "momos" },
+      { name: "Samosa", price: 15, icon: "images/samosa.jpg" },
+      { name: "Fries", price: 50, icon: "images/fries.jpg" },
+      { name: "Peri Peri Fries", price: 60, icon: "images/ppfries.jpg" },
+      { name: "Butter Chicken Fries", price: 80, icon: "images/bcfries.jpg" },
+      { name: "Pasta", price: 100, icon: "images/pasta.jpg" },
+      { name: "Nachos", price: 90, icon: "images/nachos.jpg" },
     ],
     "Pizza": [
-      { name: "Margherita Pizza", price: 140, veg: true, icon: "images/mp.jpg", photoCategory: "pizza" },
-      { name: "Farmhouse Pizza", price: 170, veg: true, icon: "images/fp.jpg", photoCategory: "pizza" },
-      { name: "Paneer Tikka Pizza", price: 180, veg: true, icon: "images/ptp.jpg", photoCategory: "pizza" },
-      { name: "Chicken Pizza", price: 180, veg: false, icon: "images/cp.jpg", photoCategory: "pizza" },
-      { name: "Pepperoni Pizza", price: 200, veg: false, icon: "images/pp.jpg", photoCategory: "pizza" },
+      { name: "Margherita Pizza", price: 140, icon: "images/mp.jpg" },
+      { name: "Farmhouse Pizza", price: 170, icon: "images/fp.jpg" },
+      { name: "Paneer Tikka Pizza", price: 180, icon: "images/ptp.jpg" },
+      { name: "Chicken Pizza", price: 180, icon: "images/cp.jpg" },
+      { name: "Pepperoni Pizza", price: 200, icon: "images/pp.jpg" },
     ],
     "Between the Breads": [
-      { name: "Veg Burger", price: 55, veg: true, icon: "images/vb.jpg", photoCategory: "burger" },
-      { name: "Chicken Burger", price: 75, veg: false, icon: "images/cb.jpg", photoCategory: "burger" },
-      { name: "Garlic Bread", price: 70, veg: true, icon: "images/gb.jpg" },
-      { name: "Chicken Hot Dog", price: 65, veg: false, icon: "images/chd.jpg" },
-      { name: "Veg Sandwich", price: 35, veg: true, icon: "images/vs.jpg" },
-      { name: "Chicken Sandwich", price: 70, veg: false, icon: "images/cs.jpg" },
-      { name: "Paneer or Tofu Wrap", price: 60, veg: true, icon: "images/pw.jpg" },
-      { name: "Chicken shawarma", price: 80, veg: false, icon: "images/csw.jpg" },
+      { name: "Veg Burger", price: 55, icon: "images/vb.jpg" },
+      { name: "Chicken Burger", price: 75, icon: "images/cb.jpg" },
+      { name: "Garlic Bread", price: 70, icon: "images/gb.jpg" },
+      { name: "Chicken Hot Dog", price: 65, icon: "images/chd.jpg" },
+      { name: "Veg Sandwich", price: 35, icon: "images/vs.jpg" },
+      { name: "Chicken Sandwich", price: 70, icon: "images/cs.jpg" },
     ],
   };
 
   const CATEGORY_STYLE = {
-    "Tea": {
-      color: ["#5A4632", "#3E3122"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 1-1 1-1 2s1 1 1 2M12 3c0 1-1 1-1 2s1 1 1 2"/></svg>'
-    },
-    "Coffee": {
-      color: ["#4A3323", "#2E1F15"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2c0 1-1 1-1 2s1 1 1 2M12 2c0 1-1 1-1 2s1 1 1 2"/></svg>'
-    },
-    "Cold Drinks": {
-      color: ["#2C5C6B", "#1D3D47"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 3h12l-1.2 16.5a2 2 0 0 1-2 1.5H9.2a2 2 0 0 1-2-1.5L6 3Z"/><path d="M5.5 7h13M14 3l3 4"/></svg>'
-    },
-    "Appitizers": {
-      color: ["#6B4A2C", "#4A331E"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 9a9 6 0 0 1 18 0Z"/><path d="M3 9l1.5 8a2 2 0 0 0 2 1.7h11a2 2 0 0 0 2-1.7L21 9"/></svg>'
-    },
-    "Pizza": {
-      color: ["#7A3B2E", "#54271D"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2 2 20h20L12 2Z"/><circle cx="12" cy="12" r="1"/><circle cx="9" cy="16" r="1"/><circle cx="15" cy="16" r="1"/></svg>'
-    },
-    "Between the Breads": {
-      color: ["#6B4E1F", "#4A3512"],
-      svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 10a8 5 0 0 1 16 0Z"/><path d="M3 10h18M4 13h16a1 1 0 0 1 1 1 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1Z"/></svg>'
-    }
+    "Tea": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 1-1 1-1 2s1 1 1 2M12 3c0 1-1 1-1 2s1 1 1 2"/></svg>' },
+    "Coffee": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2c0 1-1 1-1 2s1 1 1 2M12 2c0 1-1 1-1 2s1 1 1 2"/></svg>' },
+    "Cold Drinks": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 3h12l-1.2 16.5a2 2 0 0 1-2 1.5H9.2a2 2 0 0 1-2-1.5L6 3Z"/><path d="M5.5 7h13M14 3l3 4"/></svg>' },
+    "Appitizers": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 9a9 6 0 0 1 18 0Z"/><path d="M3 9l1.5 8a2 2 0 0 0 2 1.7h11a2 2 0 0 0 2-1.7L21 9"/></svg>' },
+    "Pizza": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2 2 20h20L12 2Z"/><circle cx="12" cy="12" r="1"/><circle cx="9" cy="16" r="1"/><circle cx="15" cy="16" r="1"/></svg>' },
+    "Between the Breads": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 10a8 5 0 0 1 16 0Z"/><path d="M3 10h18M4 13h16a1 1 0 0 1 1 1 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1Z"/></svg>' }
   };
 
   let activeCategory = Object.keys(CATALOG)[0]; 
@@ -690,9 +742,11 @@
     tabsDiv.innerHTML = '';
     Object.keys(CATALOG).forEach(function(category) {
       const btn = document.createElement('button');
-      btn.className = 'tab-btn' + (category === activeCategory ? ' active' : '');
+      btn.className = 'tab-btn' + (category === activeCategory && !searchQuery ? ' active' : '');
       btn.innerHTML = CATEGORY_STYLE[category].svg + '<span>' + category + '</span>';
       btn.onclick = function() {
+        searchQuery = '';
+        document.getElementById('searchInput').value = '';
         activeCategory = category;
         renderTabs();  
         renderGrid();  
@@ -704,7 +758,26 @@
   function renderGrid() {
     const gridDiv = document.getElementById('grid');
     gridDiv.innerHTML = '';
-    CATALOG[activeCategory].forEach(function(product) {
+
+    let productsToShow = [];
+    if (searchQuery) {
+      Object.keys(CATALOG).forEach(cat => {
+        CATALOG[cat].forEach(prod => {
+          if (prod.name.toLowerCase().includes(searchQuery)) {
+            productsToShow.push(prod);
+          }
+        });
+      });
+    } else {
+      productsToShow = CATALOG[activeCategory];
+    }
+
+    if (productsToShow.length === 0) {
+      gridDiv.innerHTML = '<p class="empty-msg" style="grid-column: 1/-1;">No products found.</p>';
+      return;
+    }
+
+    productsToShow.forEach(function(product) {
       const card = document.createElement('div');
       card.className = 'product-card';
       card.innerHTML = `
@@ -714,17 +787,6 @@
           <button class="add-btn">+ ADD</button>
         </div>
       `;
-      if (product.photoCategory) {
-        fetch('https://foodish-api.com/api/images/' + product.photoCategory)
-          .then(function(response) { return response.json(); })
-          .then(function(data) {
-            const img = document.createElement('img');
-            img.className = 'product-photo';
-            img.src = data.image;
-            img.alt = product.name;
-            img.loading = 'lazy';
-          }).catch(function() {});
-      }
       card.querySelector('.add-btn').onclick = function() {
         addToCart(product.name, product.price, product.icon);
       };
@@ -759,12 +821,10 @@
     }
     updateCart();
   }
-
   function clearCart() {
     cart = [];
     updateCart();
   }
-
   function updateCart() {
     const cartItemsDiv = document.getElementById('cartItems');
     if (cart.length === 0) {
@@ -792,12 +852,10 @@
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const tax = subtotal * TAX_RATE;
     const due = subtotal + tax;
-    
     document.getElementById('subtotal').textContent = subtotal.toFixed(2);
     document.getElementById('tax').textContent = tax.toFixed(2);
     document.getElementById('due').textContent = due.toFixed(2);
   }
-  
   renderTabs();
   renderGrid();
   updateCart();
