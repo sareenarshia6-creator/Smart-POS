@@ -262,10 +262,18 @@
     font-size: 13.5px;
     color: var(--text-light);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px; 
     line-height: 1.3;
+  }
+  
+  .product-card .pname img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
   }
   .cart-picon {
     font-size: 16px;
@@ -428,7 +436,6 @@
 </head>
 <body>
 <div class="app-shell">
-  <!-- ============ SIDEBAR (left navigation) ============ -->
   <div class="sidebar">
     <div class="logo">🍽️ Foodlogo</div>
     <nav>
@@ -484,37 +491,42 @@
     </div>
   </div>
 </div>
-
 <script>
   const CATALOG = {
     "Tea": [
-      { name: "Masala Chai", price: 10, icon: "🍵", photoCategory: "chai" },
-      { name: "Ginger Tea", price: 12, icon: "🍵", photoCategory: "chai" },
-      { name: "Lemon Tea", price: 12, icon: "🍋", photoCategory: "chai" },
-      { name: "Green Tea", price: 15, icon: "🍵", photoCategory: "chai" },
-      { name: "Kesar Chai", price: 20, icon: "🍵", photoCategory: "chai" },
+      { name: "Masala Chai", price: 10, icon: "images/mc.jpg", photoCategory: "chai" },
+      { name: "Ginger Tea", price: 12, icon: "images/gt.jpg", photoCategory: "chai" },
+      { name: "Lemon Tea", price: 12, icon: "images/lt.jpg", photoCategory: "chai" },
+      { name: "Green Tea", price: 15, icon: "images/greent.jpg", photoCategory: "chai" },
+      { name: "Kesar Chai", price: 20, icon: "images/kt.jpg", photoCategory: "chai" },
     ],
     "Coffee": [
-      { name: "Black Coffee", price: 15, icon: "☕" },
-      { name: "Espresso", price: 25, icon: "☕" },
-      { name: "Cappuccino", price: 30, icon: "☕" },
-      { name: "Latte", price: 35, icon: "☕" },
-      { name: "Cold Coffee", price: 40, icon: "🥤" },
-      { name: "Mocha", price: 40, icon: "☕" },
+      { name: "Black Coffee", price: 15, icon: "images/coffee.jpg" },
+      { name: "Espresso", price: 25, icon: "images/expresso.jpg" },
+      { name: "Cappuccino", price: 30, icon: "images/cappuccino.jpg" },
+      { name: "Latte", price: 35, icon: "images/latte.jpg" },
+      { name: "Cold Coffee", price: 40, icon: "images/coldcooffee.jpg" },
+      { name: "Mocha", price: 40, icon: "images/Mocha.png" },
     ],
     "Cold Drinks": [
-      { name: "Coca-Cola", price: 25, icon: "🥤" },
-      { name: "Pepsi", price: 25, icon: "🥤" },
-      { name: "Sprite", price: 25, icon: "🥤" },
-      { name: "Lemonade", price: 20, icon: "🍋" },
-      { name: "Iced Tea", price: 30, icon: "🧋" },
-      { name: "Mojito", price: 40, icon: "🍹" },
+      { name: "Coca-Cola", price: 25, icon: "images/cc.jpg" },
+      { name: "Pepsi", price: 25, icon: "images/pepsi.jpg" },
+      { name: "Sprite", price: 25, icon: "images/sprite.jpg" },
+      { name: "Lemonade", price: 20, icon: "images/lemonade.jpg" },
+      { name: "Iced Tea", price: 30, icon: "images/icetea.jpg" },
+      { name: "Mojito", price: 40, icon: "images/mojito.jpg" },
     ],
-    "Snacks": [
-      { name: "Samosa", price: 15, veg: true, icon: "🥟", photoCategory: "samosa" },
-      { name: "Veg Sandwich", price: 35, veg: true, icon: "🥪" },
-      { name: "Chicken Sandwich", price: 50, veg: false, icon: "🥪" },
-      { name: "Biscuit", price: 5, veg: true, icon: "🍪" },
+    "Appitizers": [
+      { name: "Samosa", price: 15, veg: true, icon: "images/samosa.jpg", photoCategory: "samosa" },
+      { name: "Fries", price: 50, veg: true, icon: "images/fries.jpg" },
+      { name: "Peri Peri Fries", price: 60, veg: true, icon: "images/ppfries.jpg" },
+      { name: "Butter Chicken Fries", price: 80, veg: false, icon: "images/bcfries.jpg" },
+      { name: "Pasta", price: 100, veg: true, icon: "images/pasta.jpg", photoCategory: "pasta" },
+      { name: "Nachos", price: 90, veg: true, icon: "images/nachos.jpg" },
+      { name: "Spring Rolls", price: 60, veg: true, icon: "images/spring.jpg", photoCategory: "momos" },
+      { name: "Green & Garden Salad", price: 100, veg: true, icon: "images/ggsalad.jpg", photoCategory: "momos" },
+      { name: "Protein & Legume Salad", price: 120, veg: true, icon: "images/pls.jpg", photoCategory: "momos" },
+      { name: "Chicken Salad", price: 120, veg: false, icon: "images/csalad.jpg", photoCategory: "momos" },
     ],
     "Pizza": [
       { name: "Margherita Pizza", price: 140, veg: true, icon: "🍕", photoCategory: "pizza" },
@@ -523,15 +535,16 @@
       { name: "Chicken Pizza", price: 180, veg: false, icon: "🍕", photoCategory: "pizza" },
       { name: "Pepperoni Pizza", price: 200, veg: false, icon: "🍕", photoCategory: "pizza" },
     ],
-    "Fast Food": [
+    "Between the Breads": [
       { name: "Veg Burger", price: 55, veg: true, icon: "🍔", photoCategory: "burger" },
       { name: "Chicken Burger", price: 75, veg: false, icon: "🍔", photoCategory: "burger" },
-      { name: "Fries", price: 50, veg: true, icon: "🍟" },
-      { name: "Veg Pasta", price: 90, veg: true, icon: "🍝", photoCategory: "pasta" },
       { name: "Garlic Bread", price: 70, veg: true, icon: "🥖" },
       { name: "Chicken Hot Dog", price: 65, veg: false, icon: "🌭" },
-      { name: "Nachos", price: 65, veg: true, icon: "🧀" },
-      { name: "Spring Rolls", price: 60, veg: true, icon: "🥢", photoCategory: "momos" },
+      { name: "Veg Sandwich", price: 35, veg: true, icon: "🥪" },
+      { name: "Chicken Sandwich", price: 70, veg: false, icon: "🥪" },
+      { name: "Paneer or Tofu Wrap", price: 60, veg: true, icon: "🥪" },
+      { name: "Chicken Wrap", price: 80, veg: false, icon: "🥪" },
+
     ],
   };
   const TAX_RATE = 0.05; 
@@ -548,7 +561,7 @@
       color: ["#2C5C6B", "#1D3D47"],
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 3h12l-1.2 16.5a2 2 0 0 1-2 1.5H9.2a2 2 0 0 1-2-1.5L6 3Z"/><path d="M5.5 7h13M14 3l3 4"/></svg>'
     },
-    "Snacks": {
+    "Appitizers": {
       color: ["#6B4A2C", "#4A331E"],
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 9a9 6 0 0 1 18 0Z"/><path d="M3 9l1.5 8a2 2 0 0 0 2 1.7h11a2 2 0 0 0 2-1.7L21 9"/></svg>'
     },
@@ -556,7 +569,7 @@
       color: ["#7A3B2E", "#54271D"],
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2 2 20h20L12 2Z"/><circle cx="12" cy="12" r="1"/><circle cx="9" cy="16" r="1"/><circle cx="15" cy="16" r="1"/></svg>'
     },
-    "Fast Food": {
+    "Between the Breads": {
       color: ["#6B4E1F", "#4A3512"],
       svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 10a8 5 0 0 1 16 0Z"/><path d="M3 10h18M4 13h16a1 1 0 0 1 1 1 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1Z"/></svg>'
     }
@@ -591,10 +604,10 @@
       } else if (product.veg === false) {
         icon = '<span class="nonveg-icon"></span>';
       }
-      const photoHtml = `<div class="product-photo photo-fallback" style="--photo-a:${colors[0]};--photo-b:${colors[1]}">${product.icon || '🍽️'}</div>`;
+      const photoHtml = ``;
       card.innerHTML = `
         ${photoHtml}
-        <div class="pname">${icon}${product.name}</div>
+        <div class="pname"><img src="${product.icon}">${product.name}</div>
         <div class="prow">
           <span class="pprice">₹${product.price}</span>
           <button class="add-btn">+ ADD</button>
