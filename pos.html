@@ -125,12 +125,17 @@
     padding: 0;
     color: var(--text-light);
   }
-  
-  /* Views */
-  .view-section { display: none; }
-  .view-section.active { display: flex; gap: 20px; flex-wrap: wrap; }
-  .full-width-view.active { display: block; }
-
+  .view-section { 
+    display: none; 
+  }
+  .view-section.active { 
+    display: flex; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+  }
+  .full-width-view.active { 
+    display: block; 
+  }
   .products {
     flex: 2;
     min-width: 300px;
@@ -159,7 +164,11 @@
     gap: 6px;
     min-width: 64px;
   }
-  .tab-btn svg { width: 20px; height: 20px; stroke: currentColor; }
+  .tab-btn svg { 
+    width: 20px; 
+    height: 20px; 
+    stroke: currentColor; 
+  }
   .tab-btn.active {
     background: rgba(227, 164, 56, 0.12);
     border-color: var(--amber);
@@ -212,7 +221,10 @@
     gap: 8px;
     width: 100%;
   }
-  .product-card .pprice { color: var(--amber); font-size: 14px; }
+  .product-card .pprice { 
+    color: var(--amber); 
+    font-size: 14px; 
+  }
   .add-btn {
     background: var(--green);
     color: white;
@@ -227,8 +239,9 @@
     justify-content: center;
     gap: 4px;
   }
-  .add-btn:hover { background: var(--green-dark); }
-  
+  .add-btn:hover { 
+    background: var(--green-dark); 
+  }
   .order-panel {
     flex: 1;
     min-width: 260px;
@@ -263,7 +276,11 @@
     cursor: pointer;
     font-size: 13px;
   }
-  .qty-btn:hover { background: var(--amber); border-color: var(--amber); color: #fff; }
+  .qty-btn:hover { 
+    background: var(--amber); 
+    border-color: var(--amber); 
+    color: #fff; 
+  }
   .qty-input {
     width: 34px;
     height: 22px;
@@ -358,14 +375,44 @@
     margin-top: 20px;
     font-family: Arial, sans-serif;
   }
-  .modal-btn-green { background: var(--green); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13.5px; }
-  .modal-btn-green:hover { background: var(--green-dark); }
-  .modal-btn-dark { background: var(--paper-ink); color: var(--paper); border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13.5px; }
-  .modal-btn-dark:hover { background: #000; }
-  .modal-btn-danger { background: var(--danger); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13.5px; }
-  .modal-btn-danger:hover { opacity: 0.9; }
-
-  /* Help & Settings Styles */
+  .modal-btn-green { 
+    background: var(--green); 
+    color: white; 
+    border: none; 
+    padding: 10px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 13.5px; 
+  }
+  .modal-btn-green:hover { 
+    background: var(--green-dark); 
+  }
+  .modal-btn-dark { 
+    background: var(--paper-ink); 
+    color: var(--paper); 
+    border: none; 
+    padding: 10px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 13.5px; 
+  }
+  .modal-btn-dark:hover { 
+    background: #000; 
+  }
+  .modal-btn-danger { 
+    background: var(--danger); 
+    color: white; 
+    border: none; 
+    padding: 10px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 13.5px; 
+  }
+  .modal-btn-danger:hover { 
+    opacity: 0.9; 
+  }
+  
   .page-container {
     background: var(--card);
     border: 1px solid var(--card-border);
@@ -378,9 +425,16 @@
     border-bottom: 1px solid var(--card-border);
     padding-bottom: 16px;
   }
-  .page-header h2 { color: var(--amber); margin: 0 0 8px 0; font-size: 22px; }
-  .page-header p { color: var(--text-light-muted); margin: 0; font-size: 14px; }
-  
+  .page-header h2 { 
+    color: var(--amber); 
+    margin: 0 0 8px 0; 
+    font-size: 22px; 
+  }
+  .page-header p { 
+    color: var(--text-light-muted); 
+    margin: 0; 
+    font-size: 14px; 
+  }
   .faq-item {
     background: var(--card-item);
     border: 1px solid var(--card-border);
@@ -388,8 +442,18 @@
     padding: 16px;
     margin-bottom: 12px;
   }
-  .faq-q { font-weight: 600; color: var(--text-light); margin: 0 0 8px 0; font-size: 15px; }
-  .faq-a { color: var(--text-light-muted); margin: 0; font-size: 13.5px; line-height: 1.5; }
+  .faq-q { 
+    font-weight: 600; 
+    color: var(--text-light); 
+    margin: 0 0 8px 0; 
+    font-size: 15px; 
+  }
+  .faq-a { 
+    color: var(--text-light-muted); 
+    margin: 0; 
+    font-size: 13.5px; 
+    line-height: 1.5; 
+  }
   .support-contact {
     background: rgba(227, 164, 56, 0.1);
     border: 1px solid var(--amber);
@@ -400,10 +464,22 @@
     gap: 16px;
     margin-top: 20px;
   }
-  .support-contact svg { width: 32px; height: 32px; stroke: var(--amber); flex-shrink: 0; }
-
-  .setting-group { margin-bottom: 20px; }
-  .setting-group label { display: block; color: var(--text-light); font-size: 13.5px; margin-bottom: 8px; font-weight: 600; }
+  .support-contact svg { 
+    width: 32px; 
+    height: 32px; 
+    stroke: var(--amber); 
+    flex-shrink: 0; 
+  }
+  .setting-group { 
+    margin-bottom: 20px; 
+  }
+  .setting-group label { 
+    display: block; 
+    color: var(--text-light); 
+    font-size: 13.5px; 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+  }
   .setting-input, .setting-select {
     width: 100%;
     background: var(--card-item);
@@ -415,7 +491,9 @@
     outline: none;
     font-family: inherit;
   }
-  .setting-input:focus, .setting-select:focus { border-color: var(--amber); }
+  .setting-input:focus, .setting-select:focus { 
+    border-color: var(--amber); 
+  }
   .save-settings-btn {
     background: var(--green);
     color: white;
@@ -427,18 +505,28 @@
     cursor: pointer;
     margin-top: 10px;
   }
-  .save-settings-btn:hover { background: var(--green-dark); }
-
-  /* Print Styles */
+  .save-settings-btn:hover { 
+    background: var(--green-dark); 
+  }
   @media print {
     body * { visibility: hidden; }
     #billModal, #billModal * { visibility: visible; }
     #billModal {
-      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-      background: white; display: flex !important; align-items: flex-start; justify-content: center;
+      position: absolute; 
+      left: 0;
+      top: 0; 
+      width: 100%; 
+      height: 100%;
+      background: white; 
+      display: flex !important; 
+      align-items: flex-start; 
+      justify-content: center;
     }
     .modal-actions { display: none !important; }
-    .modal-content { box-shadow: none; border: none; width: 100%; }
+    .modal-content { 
+    box-shadow: none; 
+    border: none; 
+    width: 100%; }
   }
 </style>
 </head>
@@ -461,7 +549,6 @@
       </button>
     </nav>
   </div>
-  
   <div class="main-content">
     <div class="topbar">
       <div class="search-box">
@@ -469,8 +556,6 @@
         <input type="text" id="searchInput" placeholder="Search menu..." oninput="handleSearch(this.value)">
       </div>
     </div>
-
-    <!-- VIEW 1: POS SYSTEM -->
     <div id="view-menu" class="view-section active">
       <div class="products">
         <div class="tabs" id="tabs"></div>
@@ -501,8 +586,6 @@
         </div>
       </div>
     </div>
-
-    <!-- VIEW 2: SETTING -->
     <div id="view-setting" class="view-section full-width-view">
       <div class="page-container">
         <div class="page-header">
@@ -529,8 +612,6 @@
         <button class="save-settings-btn" onclick="saveSettings()">Save Settings</button>
       </div>
     </div>
-
-    <!-- VIEW 3: HELP CENTER -->
     <div id="view-help" class="view-section full-width-view">
       <div class="page-container">
         <div class="page-header">
@@ -543,11 +624,8 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
-
-<!-- BILL PREVIEW MODAL -->
 <div class="modal-overlay" id="billModal">
   <div class="modal-content">
     <div id="receiptBody"></div>
@@ -558,13 +636,11 @@
     </div>
   </div>
 </div>
-
 <script>
   let TAX_RATE = 0.05; 
   let CURRENCY = "₹";
   let STORE_NAME = "Foodlogo Café";
   let searchQuery = "";
-
   function switchTab(tabName) {
     document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
@@ -580,13 +656,11 @@
       document.getElementById('view-help').classList.add('active');
     }
   }
-
   function handleSearch(query) {
     searchQuery = query.toLowerCase().trim();
     switchTab('menu');
     renderGrid();
   }
-
   function saveSettings() {
     STORE_NAME = document.getElementById('settingStoreName').value || "Foodlogo Café";
     CURRENCY = document.getElementById('settingCurrency').value;
@@ -596,28 +670,23 @@
       TAX_RATE = taxInput / 100;
       document.getElementById('taxLabel').textContent = taxInput;
     }
-
     document.getElementById('currencySymbol').textContent = CURRENCY;
     document.getElementById('currencySymbolTax').textContent = CURRENCY;
     document.getElementById('currencySymbolDue').textContent = CURRENCY;
     document.getElementById('sidebarLogo').innerHTML = '🍽️ ' + STORE_NAME;
-
     alert('Settings saved successfully!');
     updateCart();
     switchTab('menu');
   }
-
   function openBillPreview() {
     if (cart.length === 0) {
       alert("Cart is empty! Please add items first.");
       return;
     }
-
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const tax = subtotal * TAX_RATE;
     const due = subtotal + tax;
     const dateStr = new Date().toLocaleString();
-
     let receiptHTML = `
       <div style="text-align: center; margin-bottom: 12px;">
         <h2 style="margin: 0; font-size: 16px;">${STORE_NAME}</h2>
@@ -626,7 +695,6 @@
       </div>
       <div style="font-size: 12px; margin-bottom: 12px;">
     `;
-
     cart.forEach(item => {
       const lineTotal = item.price * item.qty;
       receiptHTML += `
@@ -636,7 +704,6 @@
         </div>
       `;
     });
-
     receiptHTML += `
       </div>
       <div style="font-size: 12px; border-top: 1px dashed black; padding-top: 6px;">
@@ -658,24 +725,19 @@
         <p style="margin: 2px 0;">Please come again.</p>
       </div>
     `;
-
     document.getElementById('receiptBody').innerHTML = receiptHTML;
     document.getElementById('billModal').classList.add('active');
   }
-
   function closeBillPreview() {
     document.getElementById('billModal').classList.remove('active');
   }
-
   function clearCartAndCloseModal() {
     clearCart();
     closeBillPreview();
   }
-
   function triggerActualPrint() {
     window.print();
   }
-
   const CATALOG = {
     "Tea": [
       { name: "Masala Chai", price: 10, icon: "images/mc.jpg" },
@@ -724,19 +786,21 @@
       { name: "Chicken Sandwich", price: 70, icon: "images/cs.jpg" },
     ],
   };
-
   const CATEGORY_STYLE = {
     "Tea": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 1-1 1-1 2s1 1 1 2M12 3c0 1-1 1-1 2s1 1 1 2"/></svg>' },
+    
     "Coffee": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2c0 1-1 1-1 2s1 1 1 2M12 2c0 1-1 1-1 2s1 1 1 2"/></svg>' },
+    
     "Cold Drinks": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 3h12l-1.2 16.5a2 2 0 0 1-2 1.5H9.2a2 2 0 0 1-2-1.5L6 3Z"/><path d="M5.5 7h13M14 3l3 4"/></svg>' },
+    
     "Appitizers": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 9a9 6 0 0 1 18 0Z"/><path d="M3 9l1.5 8a2 2 0 0 0 2 1.7h11a2 2 0 0 0 2-1.7L21 9"/></svg>' },
+    
     "Pizza": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2 2 20h20L12 2Z"/><circle cx="12" cy="12" r="1"/><circle cx="9" cy="16" r="1"/><circle cx="15" cy="16" r="1"/></svg>' },
+    
     "Between the Breads": { svg: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 10a8 5 0 0 1 16 0Z"/><path d="M3 10h18M4 13h16a1 1 0 0 1 1 1 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1Z"/></svg>' }
   };
-
   let activeCategory = Object.keys(CATALOG)[0]; 
   let cart = [];
-
   function renderTabs() {
     const tabsDiv = document.getElementById('tabs');
     tabsDiv.innerHTML = '';
@@ -754,11 +818,9 @@
       tabsDiv.appendChild(btn);
     });
   }
-
   function renderGrid() {
     const gridDiv = document.getElementById('grid');
     gridDiv.innerHTML = '';
-
     let productsToShow = [];
     if (searchQuery) {
       Object.keys(CATALOG).forEach(cat => {
@@ -771,12 +833,10 @@
     } else {
       productsToShow = CATALOG[activeCategory];
     }
-
     if (productsToShow.length === 0) {
       gridDiv.innerHTML = '<p class="empty-msg" style="grid-column: 1/-1;">No products found.</p>';
       return;
     }
-
     productsToShow.forEach(function(product) {
       const card = document.createElement('div');
       card.className = 'product-card';
@@ -793,7 +853,6 @@
       gridDiv.appendChild(card);
     });
   }
-
   function addToCart(name, price, icon) {
     const existingItem = cart.find(item => item.name === name);
     if (existingItem) {
@@ -803,7 +862,6 @@
     }
     updateCart();
   }
-
   function changeQty(index, amount) {
     cart[index].qty += amount;
     if (cart[index].qty <= 0) {
@@ -811,7 +869,6 @@
     }
     updateCart();
   }
-
   function setQty(index, newValue) {
     const newQty = parseInt(newValue);
     if (isNaN(newQty) || newQty <= 0) {
